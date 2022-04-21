@@ -4,4 +4,5 @@ ngransac/ngransac.egg-info
 ngransac/dist
 models/
 radar/build
+.vscode/*
 
