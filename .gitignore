@@ -5,4 +5,6 @@ ngransac/dist
 models/
 radar/build
 .vscode/*
-
+*.net
+*.txt
+*.pyc
