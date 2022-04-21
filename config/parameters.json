@@ -1,0 +1,15 @@
+{
+    "batch_size": 4,
+    "samplecount": 4,
+    "epochs": 100,
+    "resblocks": 12,
+    "ratio": 1,
+    "nfeatures": 1000,
+    "nosideinfo": false,
+    "learningrate": 1e-05,
+    "use_model": false,
+    "loss": "pose",
+    "ransac_threshold": 0.35,
+    "interations": 100,
+    "inlier_ratio": 0.9
+}
