@@ -1,4 +1,4 @@
-project(yeti)
+project(radar_processor)
 cmake_minimum_required(VERSION 3.4)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -W -Wno-unused-parameter -O2")
@@ -35,9 +35,7 @@ pybind11_add_module(radar_processor src/radar_processor.cpp
                                     src/features.cpp)
 
 
-
-
-target_link_libraries(radar_processor
+target_link_libraries(${PROJECT_NAME} PRIVATE
 	${catkin_LIBRARIES}
 	${OpenCV_LIBRARIES}
     Eigen3::Eigen
