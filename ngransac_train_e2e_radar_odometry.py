@@ -6,13 +6,26 @@ import json
 import torch
 import torch.optim as optim
 import ngransac
-
+import argparse
 torch.cuda.empty_cache()
 
-with open('./config/parameters.json', 'r') as f:
+
+arg_parser = argparse.ArgumentParser(description='json config file path')
+
+# Add the arguments
+arg_parser.add_argument('config',
+                        metavar='config_path',
+                        type=str,
+                        help='the path to config file')
+
+
+config_file_path = arg_parser.parse_args().config
+
+with open(config_file_path, 'r') as f:
     configs = json.load(f)
 
-train_data = [subdir[0] for subdir in os.walk('./correspondences')][1:]
+
+train_data = [subdir[0] for subdir in os.walk(configs['train_path'])][1:]
 
 trainset = RadarCorrespondences(train_data, configs['ratio'], configs['nfeatures'], configs['nosideinfo'])
 
