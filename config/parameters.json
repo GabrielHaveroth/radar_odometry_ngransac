@@ -11,5 +11,6 @@
     "loss": "pose",
     "ransac_threshold": 0.35,
     "interations": 100,
-    "inlier_ratio": 0.9
+    "inlier_ratio": 0.9,
+    "train_path": "./correspondences"
 }
