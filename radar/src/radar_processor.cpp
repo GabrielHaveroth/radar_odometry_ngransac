@@ -16,30 +16,6 @@
 #include <pybind11/chrono.h>
 namespace py = pybind11;
 
-std::string type2str(int type) {
-  std::string r;
-  uchar depth = type & CV_MAT_DEPTH_MASK;
-  uchar chans = 1 + (type >> CV_CN_SHIFT);
-
-  switch ( depth ) {
-    case CV_8U:  r = "8U"; break;
-    case CV_8S:  r = "8S"; break;
-    case CV_16U: r = "16U"; break;
-    case CV_16S: r = "16S"; break;
-    case CV_32S: r = "32S"; break;
-    case CV_32F: r = "32F"; break;
-    case CV_64F: r = "64F"; break;
-    default:     r = "User"; break;
-  }
-
-  r += "C";
-  r += (chans+'0');
-
-  return r;
-}
-
-
-
 
 Eigen::MatrixXd getRadarDescriptor(std::string root_folder, std::string  file_name, int kp_extraction_type)
 {
@@ -92,8 +68,6 @@ Eigen::MatrixXd getRadarDescriptor(std::string root_folder, std::string  file_na
         convert_from_bev(kp, cart_resolution, cart_pixel_width, cart_targets);
         getTimes(cart_targets, azimuths, times, t);
     }
-
-    std::cout << "Type desc: " << type2str(desc.type()) << std::endl;
     Eigen::MatrixXd desc_values = Eigen::MatrixXd::Zero(desc.rows, desc.cols);
     Eigen::MatrixXd kp_values = Eigen::MatrixXd::Zero(2, kp.size());
     
