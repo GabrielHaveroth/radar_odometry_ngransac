@@ -177,7 +177,8 @@ double findTransform(
     p1small = Eigen::MatrixXd::Zero(2, best_inliers.size());
     p2small = p1small;
 
-    for (uint j = 0; j < best_inliers.size(); ++j) {
+    for (uint j = 0; j < best_inliers.size(); ++j) 
+	{
         p1small.block(0, j, 2, 1) = p1.block(0, best_inliers[j], 2, 1);
         p2small.block(0, j, 2, 1) = p2.block(0, best_inliers[j], 2, 1);
     }
@@ -200,6 +201,7 @@ double findTransform(
 			gAccess[0][cIdx][0] += 1;
 		}
 	}
+	// return the best rigid tranform from best inliers 
 	for(unsigned i = 0; i < 3; i++)
 	{
 		for(unsigned j = 0; j < 3; j++)

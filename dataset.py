@@ -23,7 +23,7 @@ class RadarCorrespondences(Dataset):
         self.files = []
         for folder in folders:
             self.files += [folder + '/' + f for f in os.listdir(folder)]
-        self.minset = 5  # minimal set size for essential matrices
+        self.minset = 2  # minimal set for SVD
 
     def __len__(self):
         return len(self.files)
