@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 
 
 class RadarCorrespondences(Dataset):
-    """Sparse correspondences radar dataset."""
+    """Sparse correspondences radar from radar Oxford dataset."""
 
     def __init__(self, folders, ratiothreshold, nfeatures,
                  overwrite_side_info=False):
