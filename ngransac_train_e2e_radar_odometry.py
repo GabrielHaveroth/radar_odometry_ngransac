@@ -25,12 +25,14 @@ with open(config_file_path, 'r') as f:
     configs = json.load(f)
 
 
-train_data = [subdir[0] for subdir in os.walk(configs['train_path'])][1:]
+train_data = [sorted([subdir[0] for subdir in os.walk(configs['data_path'])]
+                     [1:])[seq] for seq in configs['train_seqs']]
 
-trainset = RadarCorrespondences(train_data, configs['ratio'], configs['nfeatures'], configs['nosideinfo'])
+trainset = RadarCorrespondences(train_data, configs['ratio'],
+                                configs['nfeatures'], configs['nosideinfo'])
 
-trainset_loader = torch.utils.data.DataLoader(
-    trainset, shuffle=True, num_workers=6, batch_size=configs['batch_size'])
+trainset_loader = torch.utils.data.DataLoader(trainset, shuffle=True,
+                                              batch_size=configs['batch_size'])
 # create or load model
 model = CNNet(configs['resblocks'])
 # if len(opt.model) > 0:
