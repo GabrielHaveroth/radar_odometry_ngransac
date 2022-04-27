@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 
 
 class RadarCorrespondences(Dataset):
-    """Sparse correspondences dataset."""
+    """Sparse correspondences radar dataset."""
 
     def __init__(self, folders, ratiothreshold, nfeatures,
                  overwrite_side_info=False):
@@ -91,5 +91,5 @@ class RadarCorrespondences(Dataset):
                 correspondences = result[:, 0:self.nfeatures]
                 pts1 = pts1_fixed[:, 0:self.nfeatures]
                 pts2 = pts2_fixed[:, 0:self.nfeatures]
-        T12 = util.get_transform(gt[0], gt[1], gt[5])
+        T12 = np.float32(util.get_transform(gt[0], gt[1], gt[5]))
         return correspondences, T12, pts1, pts2
