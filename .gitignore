@@ -2,7 +2,8 @@ correspondences/
 ngransac/build
 ngransac/ngransac.egg-info
 ngransac/dist
-models/
+models/*.net
+models/*.pt
 radar/build
 .vscode/*
 *.net
