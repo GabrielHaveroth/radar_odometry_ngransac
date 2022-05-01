@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 import os
-import cv2
 import math
 import util
 from torch.utils.data import Dataset
@@ -62,7 +61,7 @@ class RadarCorrespondences(Dataset):
         util.normalize_pts(kp2, im_size2)
         # Stack image coordinates and side information into one tensor
         correspondences = np.concatenate((kp1, kp2, ratios), axis=2)
-        correspondences = np.transpose(correspondences)
+        correspondences = np.float32(np.transpose(correspondences))
         correspondences = torch.from_numpy(correspondences)
 
         if self.nfeatures > 0:
