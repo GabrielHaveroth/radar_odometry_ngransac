@@ -189,7 +189,7 @@ for epoch in range(0, configs['epochs']):
 
         if iteration % STEPS_TO_VALIDATE == 0:
             avg_val_loss = val_loop(valset_loader, model, supervised_loss)
-            metrics = {"val/loss": avg_loss}
+            metrics = {"val/loss": avg_val_loss}
             model.train()
             wandb.log(metrics)
         iteration += 1
