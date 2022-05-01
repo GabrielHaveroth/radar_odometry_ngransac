@@ -8,3 +8,4 @@ radar/build
 *.net
 *.txt
 *.pyc
+wandb/
