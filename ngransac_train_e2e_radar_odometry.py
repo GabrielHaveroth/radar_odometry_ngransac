@@ -16,6 +16,7 @@ def val_loop(valset_loader, model, loss):
     print("===== Validate NG-RANSAC Odometry =====")
     val_losses = []
     model.eval()
+    random.seed(1)
     for correspondences, T12, pts1, pts2 in valset_loader:
         # Predict neural guidance
         log_probs = model(correspondences.float().cuda())
@@ -47,6 +48,7 @@ def val_loop(valset_loader, model, loss):
 
     val_loss_avg = sum(val_losses) / len(val_losses)
     print(f"Avg loss: {val_loss_avg:>8f} \n")
+    random.seed()
     return val_loss_avg
 
 
