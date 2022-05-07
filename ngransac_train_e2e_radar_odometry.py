@@ -98,7 +98,7 @@ length_train = len(trainset_loader)
 length_val = len(valset_loader)
 print('train pairs {}'.format(length_train))
 print('val pairs {}'.format(length_val))
-wandb.init(project='radar-odometry-ngransac', name='default_parameters')
+wandb.init(project=configs['wandb_project_name'], name='default_parameters')
 
 # Main training loop
 for epoch in range(0, configs['epochs']):
@@ -187,7 +187,7 @@ for epoch in range(0, configs['epochs']):
                         'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': optimizer.state_dict(),
                         'loss': avg_loss},
-                       f'models/model_step_{iteration}_epoch_{epoch}.pt')
+                       configs['save_models_path'] + f'model_step_{iteration}_epoch_{epoch}.pt')
 
         if iteration % STEPS_TO_VALIDATE == 0:
             avg_val_loss = val_loop(valset_loader, model, supervised_loss)

@@ -21,5 +21,6 @@
     "use_data_augmentation": false,
     "save_models_path": "models/",
     "log_wandb": true,
-    "name_wandb_project": "local_training",
+    "wandb_project_name": "local_training",
+    "workers_number": 4
 }
