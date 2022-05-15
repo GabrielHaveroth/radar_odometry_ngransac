@@ -3,10 +3,14 @@ ngransac/build
 ngransac/ngransac.egg-info
 ngransac/dist
 models/*.net
-models/*.pt
+models/*
 radar/build
 .vscode/*
 *.net
 *.txt
 *.pyc
 wandb/
+test.hdf5
+train_seq1.npz
+train.hdf5
+val.hdf5
