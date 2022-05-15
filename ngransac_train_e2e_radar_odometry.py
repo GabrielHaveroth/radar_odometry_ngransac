@@ -1,5 +1,5 @@
 import os
-from dataset import RadarCorrespondences
+from dataset import RadarCorrespondences, RadarCorrespondencesHdf5
 from network import CNNet
 import random
 import json
@@ -66,21 +66,31 @@ config_file_path = arg_parser.parse_args().config
 with open(config_file_path, 'r') as f:
     configs = json.load(f)
 
-total_data = sorted([subdir[0] for subdir in os.walk(configs['data_path'])][1:])
-train_data = [total_data[seq] for seq in configs['train_seqs']]
-val_data = [total_data[seq] for seq in configs['val_seqs']]
+if configs['use_hdf5']:
+    trainset = RadarCorrespondencesHdf5(configs['hdf5_path_train'],
+                                        configs['ratio'],
+                                        configs['nfeatures'],
+                                        configs['nosideinfo'])
+    valset = RadarCorrespondencesHdf5(configs['hdf5_path_val'],
+                                      configs['ratio'],
+                                      configs['nfeatures'],
+                                      configs['nosideinfo'])
+else:
+    total_data = sorted([subdir[0] for subdir in os.walk(configs['data_path'])][1:])
+    train_data = [total_data[seq] for seq in configs['train_seqs']]
+    val_data = [total_data[seq] for seq in configs['val_seqs']]
 
-trainset = RadarCorrespondences(train_data, configs['ratio'],
-                                configs['nfeatures'], configs['nosideinfo'])
+    trainset = RadarCorrespondences(train_data, configs['ratio'],
+                                    configs['nfeatures'], configs['nosideinfo'])
 
-valset = RadarCorrespondences(val_data, configs['ratio'],
-                              configs['nfeatures'], configs['nosideinfo'])
+    valset = RadarCorrespondences(val_data, configs['ratio'],
+                                  configs['nfeatures'], configs['nosideinfo'])
 
 valset_loader = torch.utils.data.DataLoader(valset, shuffle=False,
-                                            batch_size=configs['batch_size'])
+                                            batch_size=configs['batch_size'], num_workers=configs['number_workers'])
 
 trainset_loader = torch.utils.data.DataLoader(trainset, shuffle=True,
-                                              batch_size=configs['batch_size'])
+                                              batch_size=configs['batch_size'], num_workers=configs['number_workers'])
 # create or load model
 model = CNNet(configs['resblocks'])
 # if len(opt.model) > 0:
