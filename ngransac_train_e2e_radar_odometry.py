@@ -8,6 +8,7 @@ import torch.optim as optim
 import ngransac
 import argparse
 import wandb
+from datetime import datetime
 
 torch.cuda.empty_cache()
 
@@ -76,7 +77,8 @@ if configs['use_hdf5']:
                                       configs['nfeatures'],
                                       configs['nosideinfo'])
 else:
-    total_data = sorted([subdir[0] for subdir in os.walk(configs['data_path'])][1:])
+    total_data = sorted([subdir[0]
+                         for subdir in os.walk(configs['data_path'])][1:])
     train_data = [total_data[seq] for seq in configs['train_seqs']]
     val_data = [total_data[seq] for seq in configs['val_seqs']]
 
@@ -106,15 +108,18 @@ optimizer = optim.Adam(model.parameters(), lr=configs['learningrate'])
 supervised_loss = torch.nn.L1Loss()
 length_train = len(trainset_loader)
 length_val = len(valset_loader)
-print('train pairs {}'.format(length_train))
-print('val pairs {}'.format(length_val))
-wandb.init(project=configs['wandb_project_name'], name='default_parameters')
+print('train pairs per batch {}'.format(length_train))
+print('val pairs per batch {}'.format(length_val))
+actual_datatime = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
 
+wandb.init(project=configs['wandb_project_name'],
+           name=f'experiment_{actual_datatime}')
 # Main training loop
 for epoch in range(0, configs['epochs']):
     train_log = open(f'log_train{epoch + 1}.txt', 'w', 1)
     iteration = 1
-    print("=== Starting Epoch", epoch + 1, "==================================")
+    print("=== Starting Epoch", epoch + 1,
+          "==================================")
 
     # store the network every so often
     model.train()
@@ -193,11 +198,12 @@ for epoch in range(0, configs['epochs']):
             print(f"loss: {avg_loss:>7f}  [{current:>5d}/{length_train:>5d}]")
 
         if iteration % STEPS_TO_SAVE_CHECKPOINT == 0:
+            actual_datatime = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
             torch.save({'step': iteration,
                         'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': optimizer.state_dict(),
                         'loss': avg_loss},
-                       configs['save_models_path'] + f'model_step_{iteration}_epoch_{epoch}.pt')
+                       configs['save_models_path'] + f'model_step_{iteration}_epoch_{epoch}_{actual_datatime}.pt')
 
         if iteration % STEPS_TO_VALIDATE == 0:
             avg_val_loss = val_loop(valset_loader, model, supervised_loss)
