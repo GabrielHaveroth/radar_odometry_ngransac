@@ -102,6 +102,7 @@ model = model.cuda()
 check_point = {}
 STEPS_TO_VALIDATE = configs['steps_to_validate']
 STEPS_TO_SAVE_CHECKPOINT = configs['steps_to_save_checkpoint']
+STEPS_TO_PRINT_RESULTS = configs['steps_to_print_results']
 
 optimizer = optim.Adam(model.parameters(), lr=configs['learningrate'])
 
@@ -161,7 +162,7 @@ for epoch in range(0, configs['epochs']):
                 if configs['loss'] == 'inliers':
                     loss = -incount
                 else:
-                    alpha = 10
+                    alpha = configs['alpha']
                     R_pred = T12_pred[:2, :2]
                     t_pred = T12_pred[:2, 2]
                     R = T12[b][:2, :2].float()
@@ -191,7 +192,7 @@ for epoch in range(0, configs['epochs']):
         optimizer.step()
         optimizer.zero_grad()
 
-        if iteration % 100 == 0:
+        if iteration % STEPS_TO_PRINT_RESULTS == 0:
             current = iteration
             metrics = {"train/loss": avg_loss}
             wandb.log(metrics)

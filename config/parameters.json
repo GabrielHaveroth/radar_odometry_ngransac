@@ -4,7 +4,8 @@
     "epochs": 3,
     "resblocks": 12,
     "ratio": 1,
-    "nfeatures": 1000,
+    "alpha": 10,
+    "nfeatures": 2000,
     "nosideinfo": false,
     "learningrate": 1e-05,
     "use_model": false,
@@ -18,6 +19,7 @@
     "test_seqs": [2, 6, 8, 10, 17, 20, 24],
     "steps_to_save_checkpoint": 600,
     "steps_to_validate": 500,
+    "steps_to_print_results": 100,
     "use_data_augmentation": false,
     "save_models_path": "models/",
     "log_wandb": true,
@@ -25,5 +27,5 @@
     "number_workers": 4,
     "use_hdf5": true,
     "hdf5_path_train": "train.hdf5",
-    "hdf5_path_val": "val.hdf5"
+    "hdf5_path_val": "val.hdf5"   
 }
