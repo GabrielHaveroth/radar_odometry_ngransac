@@ -11,13 +11,13 @@ import wandb
 from datetime import datetime
 
 torch.cuda.empty_cache()
+random.seed(1)
 
 
 def val_loop(valset_loader, model, loss):
     print("===== Validate NG-RANSAC Odometry =====")
     val_losses = []
     model.eval()
-    random.seed(1)
     for correspondences, T12, pts1, pts2 in valset_loader:
         # Predict neural guidance
         log_probs = model(correspondences.float().cuda())
