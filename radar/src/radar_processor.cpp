@@ -76,7 +76,6 @@ Eigen::MatrixXd getRadarDescriptor(std::string root_folder, std::string  file_na
         kp_values(0, i) = kp[i].pt.x;
         kp_values(1, i) = kp[i].pt.y;
     }
-    std::cout << kp_values << std::endl;
     
     for (int i = 0; i < desc.rows; i++)
     {
@@ -88,7 +87,7 @@ Eigen::MatrixXd getRadarDescriptor(std::string root_folder, std::string  file_na
     return desc_values;
 }
 
-std::vector<Eigen::MatrixXd> getRadardCorrespondeces(std::string root_folder, std::string file_name1, std::string file_name2, int kp_extraction_type)
+std::vector<Eigen::MatrixXd> getRadardCorrespondences(std::string root_folder, std::string file_name1, std::string file_name2, int kp_extraction_type)
 {
     int min_range = 58;                 // min range of radar points (bin)
     float radar_resolution = 0.0432;    // resolution of radar bins in meters per bin
@@ -196,5 +195,5 @@ std::vector<Eigen::MatrixXd> getRadardCorrespondeces(std::string root_folder, st
 
 PYBIND11_MODULE(radar_processor, m) {
     m.def("get_radar_descriptor", &getRadarDescriptor);
-    m.def("get_radar_correspondeces", &getRadardCorrespondeces);
+    m.def("get_radar_correspondences", &getRadardCorrespondences);
 }

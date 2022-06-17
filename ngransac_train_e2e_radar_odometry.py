@@ -32,7 +32,7 @@ def val_loop(valset_loader, model, loss):
                 incount = ngransac.find_transform(pts2[b].float(),
                                                   pts1[b].float(),
                                                   probs[b], rand_seed,
-                                                  100, float(0.35),
+                                                  1000, float(0.01),
                                                   T12_pred, gradients)
                 incount /= correspondences.size(2)
                 alpha = 10
@@ -113,8 +113,9 @@ print('train pairs per batch {}'.format(length_train))
 print('val pairs per batch {}'.format(length_val))
 actual_datatime = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
 
-wandb.init(project=configs['wandb_project_name'],
-           name=f'experiment_{actual_datatime}')
+if configs['log_wandb']:
+    wandb.init(project=configs['wandb_project_name'],
+               name=f'experiment_{actual_datatime}')
 # Main training loop
 for epoch in range(0, configs['epochs']):
     train_log = open(f'log_train{epoch + 1}.txt', 'w', 1)
@@ -153,7 +154,7 @@ for epoch in range(0, configs['epochs']):
                                                   pts1[b].float(),
                                                   probs[b],
                                                   rand_seed,
-                                                  100,
+                                                  1000,
                                                   float(0.35),
                                                   T12_pred,
                                                   gradients)
@@ -195,7 +196,8 @@ for epoch in range(0, configs['epochs']):
         if iteration % STEPS_TO_PRINT_RESULTS == 0:
             current = iteration
             metrics = {"train/loss": avg_loss}
-            wandb.log(metrics)
+            if configs['log_wandb']:
+                wandb.log(metrics)
             print(f"loss: {avg_loss:>7f}  [{current:>5d}/{length_train:>5d}]")
 
         if iteration % STEPS_TO_SAVE_CHECKPOINT == 0:
@@ -210,5 +212,6 @@ for epoch in range(0, configs['epochs']):
             avg_val_loss = val_loop(valset_loader, model, supervised_loss)
             metrics = {"val/loss": avg_val_loss}
             model.train()
-            wandb.log(metrics)
+            if configs['log_wandb']:
+                wandb.log(metrics)
         iteration += 1
